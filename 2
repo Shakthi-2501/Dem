@@ -1,0 +1,62 @@
+#include <stdio.h>
+
+void readString(char str[]) {
+    int i = 0;
+    char ch;
+    while ((ch = getchar()) != '\n') {
+        str[i++] = ch;
+    }
+    str[i] = '\0';
+}
+
+// Find length (no strlen)
+int length(char str[]) {
+    int i = 0;
+    while (str[i] != '\0')
+        i++;
+    return i;
+}
+
+// Pattern match and replace
+void findReplace(char str[], char pat[], char rep[], char ans[]) {
+    int i = 0, j = 0, k, flag = 0;
+    int patLen = length(pat);
+
+    while (str[i] != '\0') {
+        k = 0;
+        while (pat[k] != '\0' && str[i + k] == pat[k])
+            k++;
+
+        if (k == patLen) {   // pattern found
+            flag = 1;
+            for (k = 0; rep[k] != '\0'; k++)
+                ans[j++] = rep[k];
+            i += patLen;
+        } else {
+            ans[j++] = str[i++];
+        }
+    }
+    ans[j] = '\0';
+
+    if (!flag)
+        printf("\nPattern NOT found\n");
+}
+
+int main() {
+    char str[200], pat[50], rep[50], ans[300];
+
+    printf("Enter main string:\n");
+    readString(str);
+
+    printf("Enter pattern string:\n");
+    readString(pat);
+
+    printf("Enter replace string:\n");
+    readString(rep);
+
+    findReplace(str, pat, rep, ans);
+
+    printf("\nResultant string:\n%s\n", ans);
+
+    return 0;
+}
