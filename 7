@@ -1,0 +1,118 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct student {
+    char usn[20];
+    char name[30];
+    char branch[10];
+    int sem;
+    char phno[15];
+    struct student *link;
+};
+
+typedef struct student NODE;
+NODE *start = NULL;
+
+// Create SLL using front insertion
+void create() {
+    int n;
+    NODE *p;
+
+    printf("Enter number of students: ");
+    scanf("%d", &n);
+
+    for (int i = 0; i < n; i++) {
+        p = (NODE *)malloc(sizeof(NODE));
+
+        printf("Enter USN, Name, Branch, Sem, Phone:\n");
+        scanf("%s %s %s %d %s",
+              p->usn, p->name, p->branch, &p->sem, p->phno);
+
+        p->link = start;
+        start = p;
+    }
+}
+
+// Display SLL and count nodes
+void display() {
+    NODE *temp = start;
+    int count = 0;
+
+    if (temp == NULL) {
+        printf("List is Empty\n");
+        return;
+    }
+
+    printf("\nSLL Contents:\n");
+    while (temp != NULL) {
+        printf("%s %s %s %d %s\n",
+               temp->usn, temp->name, temp->branch,
+               temp->sem, temp->phno);
+        temp = temp->link;
+        count++;
+    }
+    printf("Total nodes = %d\n", count);
+}
+
+// Insert at end
+void insert_end() {
+    NODE *p, *temp;
+
+    p = (NODE *)malloc(sizeof(NODE));
+    printf("Enter USN, Name, Branch, Sem, Phone:\n");
+    scanf("%s %s %s %d %s",
+          p->usn, p->name, p->branch, &p->sem, p->phno);
+
+    p->link = NULL;
+
+    if (start == NULL) {
+        start = p;
+        return;
+    }
+
+    temp = start;
+    while (temp->link != NULL)
+        temp = temp->link;
+
+    temp->link = p;
+}
+
+// Delete at front
+void delete_front() {
+    NODE *temp;
+
+    if (start == NULL) {
+        printf("List is Empty\n");
+        return;
+    }
+
+    temp = start;
+    printf("Deleted student USN: %s\n", temp->usn);
+    start = start->link;
+    free(temp);
+}
+
+int main() {
+    int choice;
+
+    while (1) {
+        printf("\n--- SLL MENU ---\n");
+        printf("1. Create\n");
+        printf("2. Display\n");
+        printf("3. Insert End\n");
+        printf("4. Delete Front\n");
+        printf("5. Exit\n");
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1: create(); break;
+            case 2: display(); break;
+            case 3: insert_end(); break;
+            case 4: delete_front(); break;
+            case 5: return 0;
+            default: printf("Invalid choice\n");
+        }
+    }
+}
