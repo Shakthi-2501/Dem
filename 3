@@ -1,0 +1,103 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX 5
+
+int stack[MAX];
+int top = -1;
+
+// Push operation
+void push(int item) {
+    if (top == MAX - 1) {
+        printf("STACK OVERFLOW\n");
+        return;
+    }
+    stack[++top] = item;
+}
+
+// Pop operation
+int pop() {
+    if (top == -1) {
+        printf("STACK UNDERFLOW\n");
+        return -1;
+    }
+    return stack[top--];
+}
+
+// Display stack
+void display() {
+    if (top == -1) {
+        printf("Stack is Empty\n");
+        return;
+    }
+    printf("Stack contents:\n");
+    for (int i = top; i >= 0; i--)
+        printf("| %d |\n", stack[i]);
+}
+
+// Palindrome check using stack
+void palindrome() {
+    char str[50];
+    int len, i;
+
+    top = -1;   // reset stack
+
+    printf("Enter a number/string: ");
+    scanf("%s", str);
+
+    len = strlen(str);
+
+    for (i = 0; i < len; i++)
+        push(str[i]);
+
+    for (i = 0; i < len; i++) {
+        if (str[i] != pop()) {
+            printf("NOT a Palindrome\n");
+            return;
+        }
+    }
+    printf("Palindrome\n");
+}
+
+int main() {
+    int choice, item;
+
+    while (1) {
+        printf("\n--- STACK MENU ---\n");
+        printf("1. Push\n");
+        printf("2. Pop\n");
+        printf("3. Display\n");
+        printf("4. Palindrome Check\n");
+        printf("5. Exit\n");
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter item: ");
+                scanf("%d", &item);
+                push(item);
+                break;
+
+            case 2:
+                item = pop();
+                if (item != -1)
+                    printf("Popped item: %d\n", item);
+                break;
+
+            case 3:
+                display();
+                break;
+
+            case 4:
+                palindrome();
+                break;
+
+            case 5:
+                return 0;
+
+            default:
+                printf("Invalid choice\n");
+        }
+    }
+}
